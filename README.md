@@ -48,3 +48,13 @@ npm run dev
 ```bash
 npm run test
 ```
+
+## Continuous Integration
+
+This project uses GitHub Actions for Continuous Integration (CI). On every push or pull request to the `main` branch, the following checks are run:
+
+- ✅ Prettier formatting check
+- ✅ ESLint code linting
+- ✅ Build verification
+- ✅ Security audit (`npm audit`)
+- ✅ Automated unit tests using Vitest
