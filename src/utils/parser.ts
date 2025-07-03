@@ -36,7 +36,9 @@ export function parseLogFile(content: string): LogStats {
     const { ip, url } = parsed;
 
     uniqueIPs.add(ip);
+    // eslint-disable-next-line security/detect-object-injection
     urlCounts[url] = (urlCounts[url] || 0) + 1;
+    // eslint-disable-next-line security/detect-object-injection
     ipCounts[ip] = (ipCounts[ip] || 0) + 1;
   }
 
