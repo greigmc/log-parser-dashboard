@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import StatCard from "../components/StatCard";
+import StatCard from "../components/LogDashboard/StatCard";
 import "@testing-library/jest-dom";
 
 describe("StatCard", () => {

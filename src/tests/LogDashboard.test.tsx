@@ -1,3 +1,4 @@
+// app.test.tsx
 /// <reference types="vitest" />
 import {
   render,
@@ -7,18 +8,18 @@ import {
   within,
 } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import App from "../App";
+import LogDashboard from "../components/LogDashboard";
 
 describe("App component", () => {
   test("renders file input with label", () => {
-    render(<App />);
+    render(<LogDashboard />);
     const fileInput = screen.getByLabelText(/upload log file/i);
     expect(fileInput).toBeInTheDocument();
     expect(fileInput).toHaveAttribute("type", "file");
   });
 
   test("displays stats when file is uploaded", async () => {
-    render(<App />);
+    render(<LogDashboard />);
 
     const fileInput = screen.getByLabelText(/upload log file/i);
 
