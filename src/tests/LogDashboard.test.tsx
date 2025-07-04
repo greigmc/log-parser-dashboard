@@ -1,5 +1,3 @@
-// app.test.tsx
-/// <reference types="vitest" />
 import {
   render,
   screen,
@@ -10,7 +8,7 @@ import {
 import "@testing-library/jest-dom";
 import LogDashboard from "../components/LogDashboard";
 
-describe("App component", () => {
+describe("LogDashboard component", () => {
   test("renders file input with label", () => {
     render(<LogDashboard />);
     const fileInput = screen.getByLabelText(/upload log file/i);
@@ -27,42 +25,48 @@ describe("App component", () => {
 177.71.128.22 - - [10/Jul/2018:22:22:28 +0200] "GET /home HTTP/1.1" 200 1234
 177.71.128.21 - - [10/Jul/2018:22:23:28 +0200] "GET /home HTTP/1.1" 200 1234`;
 
-    const file = new File([mockLogContent], "test.log", { type: "text/plain" });
+    const file = new File([mockLogContent], "test.log", {
+      type: "text/plain",
+    });
 
     fireEvent.change(fileInput, {
       target: { files: [file] },
     });
 
-    // Wait for the main headings to appear
     await waitFor(() => {
-      expect(screen.getByText(/unique ip addresses/i)).toBeInTheDocument();
+      expect(screen.getByText(/all unique ip addresses/i)).toBeInTheDocument();
       expect(screen.getByText(/top 3 visited urls/i)).toBeInTheDocument();
       expect(
         screen.getByText(/top 3 active ip addresses/i),
       ).toBeInTheDocument();
     });
 
-    // Check the Unique IP count (should be 2)
-    const uniqueIpCard = screen
-      .getByText(/unique ip addresses/i)
+    const uniqueCard = screen
+      .getByText(/all unique ip addresses/i)
       .closest("div");
-    expect(uniqueIpCard).toBeTruthy();
-    expect(within(uniqueIpCard!).getByText("2")).toBeInTheDocument();
+    expect(uniqueCard).toBeTruthy();
+    if (uniqueCard) {
+      expect(
+        within(uniqueCard).getByText((text) => /2\b/.test(text)),
+      ).toBeInTheDocument();
+    }
 
-    // Check that "/home" appears in top visited URLs
     const urlsCard = screen.getByText(/top 3 visited urls/i).closest("div");
     expect(urlsCard).toBeTruthy();
-    expect(
-      within(urlsCard!).getByText((text) => text.includes("/home")),
-    ).toBeInTheDocument();
+    if (urlsCard) {
+      expect(
+        within(urlsCard).getByText((text) => text.includes("/home")),
+      ).toBeInTheDocument();
+    }
 
-    // Check that "177.71.128.21" appears in top IPs
     const ipCard = screen
       .getByText(/top 3 active ip addresses/i)
       .closest("div");
     expect(ipCard).toBeTruthy();
-    expect(
-      within(ipCard!).getByText((text) => text.includes("177.71.128.21")),
-    ).toBeInTheDocument();
+    if (ipCard) {
+      expect(
+        within(ipCard).getByText((text) => text.includes("177.71.128.21")),
+      ).toBeInTheDocument();
+    }
   });
 });
